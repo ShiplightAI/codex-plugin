@@ -6,6 +6,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GLOBAL=false
+FREE=false
 
 usage() {
   cat <<EOF
@@ -14,12 +15,14 @@ Usage: $(basename "$0") [OPTIONS]
 Install Shiplight skills and MCP config for Codex.
 
 Options:
+  --free      Install free version only (MCP browser tools + verify skill)
   --global    Install to user-level (~/.agents/skills/ and ~/.codex/config.toml)
               Default: project-level (.agents/skills/ and .codex/config.toml)
   --help      Show this help message
 
 Examples:
-  bash install.sh            # Install to current project
+  bash install.sh            # Install all skills
+  bash install.sh --free     # Install free version (verify only)
   bash install.sh --global   # Install for all projects
 EOF
   exit 0
@@ -27,6 +30,7 @@ EOF
 
 for arg in "$@"; do
   case "$arg" in
+    --free) FREE=true ;;
     --global) GLOBAL=true ;;
     --help|-h) usage ;;
     *) echo "Unknown option: $arg"; usage ;;
@@ -43,11 +47,19 @@ else
   SCOPE="project-level"
 fi
 
-echo "Installing Shiplight Codex plugin ($SCOPE)..."
+if [ "$FREE" = true ]; then
+  SKILLS="verify"
+  EDITION="free"
+else
+  SKILLS="verify shiplight"
+  EDITION="full"
+fi
+
+echo "Installing Shiplight Codex plugin ($EDITION, $SCOPE)..."
 echo ""
 
 # --- Install skills ---
-for skill in verify shiplight; do
+for skill in $SKILLS; do
   src="$SCRIPT_DIR/.agents/skills/$skill"
   dest="$SKILLS_DIR/$skill"
 
@@ -92,10 +104,14 @@ fi
 echo ""
 echo "Done! Installed:"
 echo "  - $SKILLS_DIR/verify/SKILL.md        (browser verification skill)"
-echo "  - $SKILLS_DIR/shiplight/SKILL.md     (cloud test management skill)"
+if [ "$FREE" = false ]; then
+  echo "  - $SKILLS_DIR/shiplight/SKILL.md     (cloud test management skill)"
+fi
 echo "  - $CONFIG_FILE                        (MCP server config)"
 echo ""
 echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
-echo "  3. Use \$shiplight to manage cloud test cases"
+if [ "$FREE" = false ]; then
+  echo "  3. Use \$shiplight to manage cloud test cases"
+fi
