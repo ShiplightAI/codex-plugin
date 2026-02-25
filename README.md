@@ -5,18 +5,18 @@ AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — brow
 ## Quick Install
 
 ```bash
-bash install.sh
+bash install.sh            # Install all skills (verify + shiplight cloud)
+bash install.sh --free     # Install free version only (MCP + verify)
+bash install.sh --global   # Install to user-level (available across all projects)
 ```
 
-This copies skills and MCP config into your current project. For user-level install (available across all projects):
-
-```bash
-bash install.sh --global
-```
+Options can be combined, e.g. `bash install.sh --free --global`.
 
 ## Manual Install
 
-1. Copy `.agents/skills/verify/` and `.agents/skills/shiplight/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for global).
+### Free version (MCP + verify)
+
+1. Copy `.agents/skills/verify/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for global).
 
 2. Add the browser MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
 
@@ -29,9 +29,13 @@ args = ["-y", "@shiplightai/mcp@latest"]
 PWDEBUG = "console"
 ```
 
+### Full version (adds shiplight cloud)
+
+Follow the free version steps above, then also copy `.agents/skills/shiplight/` to your `.agents/skills/` directory.
+
 ## Skills
 
-### `$verify` — Browser Verification
+### `$verify` — Browser Verification (free)
 
 Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior.
 
