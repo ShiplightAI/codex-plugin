@@ -1,0 +1,12 @@
+interface:
+  display_name: "Shiplight MCP"
+  short_description: "Browser testing and UI verification via Shiplight MCP"
+
+policy:
+  allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "browser"
+      description: "Browser automation tools for UI testing and verification"
