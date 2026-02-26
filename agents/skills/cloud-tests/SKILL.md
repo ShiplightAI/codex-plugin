@@ -1,6 +1,6 @@
 ---
-name: shiplight
-description: "Shiplight test case creation, runs, environments, folders, and account management."
+name: cloud-tests
+description: "Shiplight Cloud test case creation, runs, environments, folders, and account management."
 ---
 
 # Shiplight Cloud

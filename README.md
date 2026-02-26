@@ -16,7 +16,7 @@ Options can be combined, e.g. `bash install.sh --all --scope user`.
 
 ### Default (MCP + verify)
 
-1. Copy `.agents/skills/verify/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
+1. Copy `agents/skills/shiplight/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
 
 2. Install the MCP server globally:
 
@@ -33,15 +33,15 @@ command = "shiplight-mcp"
 
 ### All skills (adds Shiplight cloud)
 
-Follow the steps above, then also copy `.agents/skills/shiplight/` to your `.agents/skills/` directory.
+Follow the steps above, then also copy `agents/skills/cloud-tests/` to your `.agents/skills/` directory.
 
 ## Skills
 
 ### `$verify` — Browser Verification (free)
 
-Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior.
+Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior. Installed as `agents/skills/shiplight/`.
 
-### `$shiplight` — Cloud Test Management
+### `$cloud-tests` — Cloud Test Management
 
 Create, run, and manage test cases via the Shiplight REST API. Supports test generation from natural language goals, test execution with result polling, and artifact downloads.
 

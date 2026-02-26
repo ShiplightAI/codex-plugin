@@ -56,10 +56,10 @@ else
 fi
 
 if [ "$ALL" = true ]; then
-  SKILLS="verify shiplight"
+  SKILLS="shiplight cloud-tests"
   EDITION="full"
 else
-  SKILLS="verify"
+  SKILLS="shiplight"
   EDITION="standard"
 fi
 
@@ -71,7 +71,7 @@ echo ""
 ABS_SKILLS_DIR="$(cd "$SKILLS_DIR" 2>/dev/null && pwd || echo "$SKILLS_DIR")"
 
 for skill in $SKILLS; do
-  src="$SCRIPT_DIR/.agents/skills/$skill"
+  src="$SCRIPT_DIR/agents/skills/$skill"
   dest="$SKILLS_DIR/$skill"
   abs_dest="$ABS_SKILLS_DIR/$skill"
 
@@ -119,8 +119,8 @@ TOML
   fi
 else
   echo "  Creating $CONFIG_FILE"
-  cp "$SCRIPT_DIR/.codex/config.toml" "$CONFIG_FILE"
-  echo "    $SCRIPT_DIR/.codex/config.toml -> $CONFIG_FILE"
+  cp "$SCRIPT_DIR/codex/config.toml" "$CONFIG_FILE"
+  echo "    $SCRIPT_DIR/codex/config.toml -> $CONFIG_FILE"
 fi
 
 echo ""
@@ -130,5 +130,5 @@ echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
 if [ "$ALL" = true ]; then
-  echo "  3. Use \$shiplight to manage cloud test cases"
+  echo "  3. Use \$cloud-tests to manage cloud test cases"
 fi

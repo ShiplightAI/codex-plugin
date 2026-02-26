@@ -9,7 +9,7 @@ Use the `@shiplightai/mcp` browser tools to visually verify that your code chang
 
 ## When to use
 
-Use `/verify` after making UI changes to confirm they render correctly. This is useful for:
+Use `$verify` after making UI changes to confirm they render correctly. This is useful for:
 - Checking layout, styling, or component changes visually
 - Verifying interactive behavior (clicks, form inputs, navigation)
 - Pre-commit sanity checks on UI work
