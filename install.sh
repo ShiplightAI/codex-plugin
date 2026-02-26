@@ -97,6 +97,10 @@ for skill in $SKILLS; do
   fi
 done
 
+# --- Install MCP server ---
+echo "  Installing @shiplightai/mcp globally..."
+npm install -g @shiplightai/mcp
+
 # --- Install MCP config ---
 mkdir -p "$CODEX_DIR"
 CONFIG_FILE="$CODEX_DIR/config.toml"
@@ -110,11 +114,7 @@ if [ -f "$CONFIG_FILE" ]; then
     cat >> "$CONFIG_FILE" <<'TOML'
 
 [mcp_servers.browser]
-command = "npx"
-args = ["-y", "@shiplightai/mcp@latest"]
-
-[mcp_servers.browser.env]
-PWDEBUG = "console"
+command = "shiplight-mcp"
 TOML
   fi
 else
