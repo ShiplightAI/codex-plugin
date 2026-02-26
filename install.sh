@@ -56,10 +56,10 @@ else
 fi
 
 if [ "$ALL" = true ]; then
-  SKILLS="shiplight cloud-tests"
+  SKILLS="verify cloud-tests"
   EDITION="full"
 else
-  SKILLS="shiplight"
+  SKILLS="verify"
   EDITION="standard"
 fi
 
