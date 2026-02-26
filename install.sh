@@ -5,8 +5,8 @@ set -euo pipefail
 # Installs skills and MCP config for Codex
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-GLOBAL=false
-FREE=false
+SCOPE="user"
+ALL=false
 
 usage() {
   cat <<EOF
@@ -15,53 +15,72 @@ Usage: $(basename "$0") [OPTIONS]
 Install Shiplight skills and MCP config for Codex.
 
 Options:
-  --free      Install free version only (MCP browser tools + verify skill)
-  --global    Install to user-level (~/.agents/skills/ and ~/.codex/config.toml)
-              Default: project-level (.agents/skills/ and .codex/config.toml)
-  --help      Show this help message
+  --all             Install all skills including Shiplight cloud
+  --scope <value>   Install scope: "user" (default) or "project"
+                    project: .agents/skills/ and .codex/config.toml
+                    user:    ~/.agents/skills/ and ~/.codex/config.toml
+  --help            Show this help message
 
 Examples:
-  bash install.sh            # Install all skills
-  bash install.sh --free     # Install free version (verify only)
-  bash install.sh --global   # Install for all projects
+  bash install.sh                     # Install verify skill (user-level)
+  bash install.sh --all              # Install all skills including Shiplight cloud
+  bash install.sh --scope project    # Install to current project only
 EOF
   exit 0
 }
 
-for arg in "$@"; do
-  case "$arg" in
-    --free) FREE=true ;;
-    --global) GLOBAL=true ;;
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --all) ALL=true; shift ;;
+    --scope)
+      if [[ -z "${2:-}" ]]; then
+        echo "Error: --scope requires a value (project or user)"
+        exit 1
+      fi
+      if [[ "$2" != "project" && "$2" != "user" ]]; then
+        echo "Error: --scope must be 'project' or 'user'"
+        exit 1
+      fi
+      SCOPE="$2"; shift 2 ;;
     --help|-h) usage ;;
-    *) echo "Unknown option: $arg"; usage ;;
+    *) echo "Unknown option: $1"; usage ;;
   esac
 done
 
-if [ "$GLOBAL" = true ]; then
+if [ "$SCOPE" = "user" ]; then
   SKILLS_DIR="$HOME/.agents/skills"
   CODEX_DIR="$HOME/.codex"
-  SCOPE="user-level"
 else
   SKILLS_DIR=".agents/skills"
   CODEX_DIR=".codex"
-  SCOPE="project-level"
 fi
 
-if [ "$FREE" = true ]; then
-  SKILLS="verify"
-  EDITION="free"
-else
+if [ "$ALL" = true ]; then
   SKILLS="verify shiplight"
   EDITION="full"
+else
+  SKILLS="verify"
+  EDITION="standard"
 fi
 
-echo "Installing Shiplight Codex plugin ($EDITION, $SCOPE)..."
+echo "Installing Shiplight Codex plugin ($EDITION, scope=$SCOPE)..."
 echo ""
 
 # --- Install skills ---
+# Resolve SKILLS_DIR to absolute path for comparison
+ABS_SKILLS_DIR="$(cd "$SKILLS_DIR" 2>/dev/null && pwd || echo "$SKILLS_DIR")"
+
 for skill in $SKILLS; do
   src="$SCRIPT_DIR/.agents/skills/$skill"
   dest="$SKILLS_DIR/$skill"
+  abs_dest="$ABS_SKILLS_DIR/$skill"
+
+  # Skip if source and destination are the same directory
+  if [ "$src" = "$abs_dest" ]; then
+    echo "  Skill already in place: $skill"
+    echo "    $dest/SKILL.md (no copy needed)"
+    continue
+  fi
 
   if [ -d "$dest" ]; then
     echo "  Updating skill: $skill"
@@ -71,8 +90,10 @@ for skill in $SKILLS; do
 
   mkdir -p "$dest/agents"
   cp "$src/SKILL.md" "$dest/SKILL.md"
+  echo "    $src/SKILL.md -> $dest/SKILL.md"
   if [ -f "$src/agents/openai.yaml" ]; then
     cp "$src/agents/openai.yaml" "$dest/agents/openai.yaml"
+    echo "    $src/agents/openai.yaml -> $dest/agents/openai.yaml"
   fi
 done
 
@@ -83,9 +104,9 @@ CONFIG_FILE="$CODEX_DIR/config.toml"
 if [ -f "$CONFIG_FILE" ]; then
   # Check if browser server is already configured
   if grep -q '\[mcp_servers\.browser\]' "$CONFIG_FILE" 2>/dev/null; then
-    echo "  MCP config: browser server already configured in $CONFIG_FILE"
+    echo "  Browser MCP server already configured in $CONFIG_FILE"
   else
-    echo "  MCP config: appending browser server to $CONFIG_FILE"
+    echo "  Appending browser MCP server to $CONFIG_FILE"
     cat >> "$CONFIG_FILE" <<'TOML'
 
 [mcp_servers.browser]
@@ -97,21 +118,17 @@ PWDEBUG = "console"
 TOML
   fi
 else
-  echo "  MCP config: creating $CONFIG_FILE"
+  echo "  Creating $CONFIG_FILE"
   cp "$SCRIPT_DIR/.codex/config.toml" "$CONFIG_FILE"
+  echo "    $SCRIPT_DIR/.codex/config.toml -> $CONFIG_FILE"
 fi
 
 echo ""
-echo "Done! Installed:"
-echo "  - $SKILLS_DIR/verify/SKILL.md        (browser verification skill)"
-if [ "$FREE" = false ]; then
-  echo "  - $SKILLS_DIR/shiplight/SKILL.md     (cloud test management skill)"
-fi
-echo "  - $CONFIG_FILE                        (MCP server config)"
+echo "Done!"
 echo ""
 echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
-if [ "$FREE" = false ]; then
+if [ "$ALL" = true ]; then
   echo "  3. Use \$shiplight to manage cloud test cases"
 fi
