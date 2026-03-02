@@ -97,24 +97,24 @@ for skill in $SKILLS; do
   fi
 done
 
-# --- Install MCP server ---
-echo "  Installing @shiplightai/mcp globally..."
-npm install -g @shiplightai/mcp
-
 # --- Install MCP config ---
 mkdir -p "$CODEX_DIR"
 CONFIG_FILE="$CODEX_DIR/config.toml"
 
 if [ -f "$CONFIG_FILE" ]; then
   # Check if browser server is already configured
-  if grep -q '\[mcp_servers\.browser\]' "$CONFIG_FILE" 2>/dev/null; then
-    echo "  Browser MCP server already configured in $CONFIG_FILE"
+  if grep -q '\[mcp_servers\.shiplight\]' "$CONFIG_FILE" 2>/dev/null; then
+    echo "  Shiplight MCP server already configured in $CONFIG_FILE"
   else
-    echo "  Appending browser MCP server to $CONFIG_FILE"
+    echo "  Appending Shiplight MCP server to $CONFIG_FILE"
     cat >> "$CONFIG_FILE" <<'TOML'
 
-[mcp_servers.browser]
-command = "shiplight-mcp"
+[mcp_servers.shiplight]
+command = "npx"
+args = ["--yes", "@shiplightai/mcp@latest"]
+
+[mcp_servers.shiplight.env]
+PWDEBUG = "console"
 TOML
   fi
 else

@@ -18,17 +18,15 @@ Options can be combined, e.g. `bash install.sh --all --scope user`.
 
 1. Copy `agents/skills/verify/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
 
-2. Install the MCP server globally:
-
-```bash
-npm install -g @shiplightai/mcp
-```
-
-3. Add the browser MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
+2. Add the Shiplight MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
 
 ```toml
-[mcp_servers.browser]
-command = "shiplight-mcp"
+[mcp_servers.shiplight]
+command = "npx"
+args = ["--yes", "@shiplightai/mcp@latest"]
+
+[mcp_servers.shiplight.env]
+PWDEBUG = "console"
 ```
 
 ### All skills (adds Shiplight cloud)
