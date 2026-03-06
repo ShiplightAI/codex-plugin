@@ -1,0 +1,12 @@
+interface:
+  display_name: "Shiplight MCP"
+  short_description: "Scaffold local test projects and write YAML tests via Shiplight MCP"
+
+policy:
+  allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "shiplight"
+      description: "Browser automation tools for UI testing and local test project setup"
