@@ -56,10 +56,10 @@ else
 fi
 
 if [ "$ALL" = true ]; then
-  SKILLS="verify create_tests cloud-tests"
+  SKILLS="verify create_yaml_tests cloud-tests"
   EDITION="full"
 else
-  SKILLS="verify create_tests"
+  SKILLS="verify create_yaml_tests"
   EDITION="standard"
 fi
 
@@ -129,7 +129,7 @@ echo ""
 echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
-echo "  3. Use \$create_tests to scaffold a local Shiplight test project"
+echo "  3. Use \$create_yaml_tests to scaffold a local Shiplight test project"
 if [ "$ALL" = true ]; then
   echo "  4. Use \$cloud-tests to manage cloud test cases"
 fi

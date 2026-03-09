@@ -14,9 +14,9 @@ Options can be combined, e.g. `bash install.sh --all --scope user`.
 
 ## Manual Install
 
-### Default (MCP + verify)
+### Default (MCP + verify + create_yaml_tests)
 
-1. Copy `agents/skills/verify/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
+1. Copy `agents/skills/verify/` and `agents/skills/create_yaml_tests/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
 
 2. Add the Shiplight MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
 
@@ -37,7 +37,11 @@ Follow the steps above, then also copy `agents/skills/cloud-tests/` to your `.ag
 
 ### `$verify` — Browser Verification (free)
 
-Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior. Installed as `agents/skills/verify/`.
+Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior.
+
+### `$create_yaml_tests` — YAML Test Authoring (free)
+
+Scaffold a local Shiplight test project, configure credentials, and write YAML tests by walking through the app in a browser.
 
 ### `$cloud-tests` — Cloud Test Management
 
