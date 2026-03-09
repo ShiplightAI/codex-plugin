@@ -1,5 +1,5 @@
 interface:
-  display_name: "Shiplight MCP"
+  display_name: "Shiplight Test Creator"
   short_description: "Scaffold local test projects and write YAML tests via Shiplight MCP"
 
 policy:

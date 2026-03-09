@@ -1,5 +1,5 @@
 interface:
-  display_name: "Shiplight Cloud"
+  display_name: "Shiplight Cloud Test Management"
   short_description: "Cloud test case management — create, run, and manage tests via Shiplight API"
 
 policy:

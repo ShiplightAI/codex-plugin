@@ -117,6 +117,24 @@ args = ["--yes", "@shiplightai/mcp@latest"]
 PWDEBUG = "console"
 TOML
   fi
+
+  # Add cloud MCP server if --all
+  if [ "$ALL" = true ]; then
+    if grep -q '\[mcp_servers\.shiplight-cloud\]' "$CONFIG_FILE" 2>/dev/null; then
+      echo "  Shiplight Cloud MCP server already configured in $CONFIG_FILE"
+    else
+      echo "  Appending Shiplight Cloud MCP server to $CONFIG_FILE"
+      cat >> "$CONFIG_FILE" <<'TOML'
+
+[mcp_servers.shiplight-cloud]
+command = "npx"
+args = ["--yes", "@shiplightai/mcp@latest", "--cloud-only"]
+
+[mcp_servers.shiplight-cloud.env]
+API_TOKEN = ""
+TOML
+    fi
+  fi
 else
   echo "  Creating $CONFIG_FILE"
   cp "$SCRIPT_DIR/codex/config.toml" "$CONFIG_FILE"

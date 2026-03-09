@@ -1,5 +1,5 @@
 interface:
-  display_name: "Shiplight MCP"
+  display_name: "Shiplight UI Verifier"
   short_description: "Browser testing and UI verification via Shiplight MCP"
 
 policy:

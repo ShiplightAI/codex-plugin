@@ -4,3 +4,10 @@ args = ["--yes", "@shiplightai/mcp@latest"]
 
 [mcp_servers.shiplight.env]
 PWDEBUG = "console"
+
+[mcp_servers.shiplight-cloud]
+command = "npx"
+args = ["--yes", "@shiplightai/mcp@latest", "--cloud-only"]
+
+[mcp_servers.shiplight-cloud.env]
+API_TOKEN = ""
