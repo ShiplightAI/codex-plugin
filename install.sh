@@ -128,10 +128,8 @@ TOML
 
 [mcp_servers.shiplight-cloud]
 command = "npx"
-args = ["--yes", "@shiplightai/mcp@latest", "--cloud-only"]
+args = ["--yes", "@shiplightai/mcp@latest", "--cloud"]
 
-[mcp_servers.shiplight-cloud.env]
-API_TOKEN = ""
 TOML
     fi
   fi
