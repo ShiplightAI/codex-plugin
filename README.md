@@ -3,20 +3,23 @@
 AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — browser testing via MCP and cloud test management.
 
 ## Quick Install
+```bash
+git clone https://github.com/ShiplightAI/codex-plugin
+```
 
 ```bash
-bash install.sh                     # Install verify skill (user-level)
-bash install.sh --all               # Install all skills including Shiplight cloud
-bash install.sh --scope project     # Install to current project only
+bash ./codex-plugin/install.sh                     # Install verify skill (project-level)
+bash ./codex-plugin/install.sh --all               # Install all skills including Shiplight cloud
+bash ./codex-plugin/install.sh --scope user        # Install to user-level
 ```
 
 Options can be combined, e.g. `bash install.sh --all --scope user`.
 
 ## Manual Install
 
-### Default (MCP + verify + create_yaml_tests)
+### Default (MCP + verify + create_tests)
 
-1. Copy `agents/skills/verify/` and `agents/skills/create_yaml_tests/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
+1. Copy `agents/skills/verify/` and `agents/skills/create_tests/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
 
 2. Add the Shiplight MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
 
@@ -39,7 +42,7 @@ Follow the steps above, then also copy `agents/skills/cloud-tests/` to your `.ag
 
 Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior.
 
-### `$create_yaml_tests` — YAML Test Authoring (free)
+### `$create_tests` — YAML Test Authoring (free)
 
 Scaffold a local Shiplight test project, configure credentials, and write YAML tests by walking through the app in a browser.
 

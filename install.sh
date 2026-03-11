@@ -5,7 +5,7 @@ set -euo pipefail
 # Installs skills and MCP config for Codex
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCOPE="user"
+SCOPE="project"
 ALL=false
 
 usage() {
@@ -56,14 +56,26 @@ else
 fi
 
 if [ "$ALL" = true ]; then
-  SKILLS="verify create_yaml_tests cloud-tests"
+  SKILLS="verify create_tests cloud-tests"
   EDITION="full"
 else
-  SKILLS="verify create_yaml_tests"
+  SKILLS="verify create_tests"
   EDITION="standard"
 fi
 
 echo "Installing Shiplight Codex plugin ($EDITION, scope=$SCOPE)..."
+if [ "$SCOPE" = "user" ]; then
+  echo "  Destination: $HOME/.agents/skills/ and $HOME/.codex/"
+else
+  echo "  Destination: $(pwd)/.agents/skills/ and $(pwd)/.codex/"
+fi
+echo ""
+read -r -p "Proceed with installation? [Y/n] " CONFIRM
+CONFIRM="${CONFIRM:-Y}"
+if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+  echo "Installation cancelled."
+  exit 0
+fi
 echo ""
 
 # --- Install skills ---
@@ -145,7 +157,7 @@ echo ""
 echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
-echo "  3. Use \$create_yaml_tests to scaffold a local Shiplight test project"
+echo "  3. Use \$create_tests to scaffold a local Shiplight test project"
 if [ "$ALL" = true ]; then
   echo "  4. Use \$cloud-tests to manage cloud test cases"
 fi
