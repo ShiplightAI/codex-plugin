@@ -6,7 +6,6 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCOPE="project"
-ALL=false
 
 usage() {
   cat <<EOF
@@ -15,23 +14,20 @@ Usage: $(basename "$0") [OPTIONS]
 Install Shiplight skills and MCP config for Codex.
 
 Options:
-  --all             Install all skills including Shiplight cloud
-  --scope <value>   Install scope: "user" (default) or "project"
+  --scope <value>   Install scope: "project" (default) or "user"
                     project: .agents/skills/ and .codex/config.toml
                     user:    ~/.agents/skills/ and ~/.codex/config.toml
   --help            Show this help message
 
 Examples:
-  bash install.sh                     # Install verify skill (user-level)
-  bash install.sh --all              # Install all skills including Shiplight cloud
-  bash install.sh --scope project    # Install to current project only
+  bash install.sh                     # Install to current project
+  bash install.sh --scope user        # Install to user-level
 EOF
   exit 0
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --all) ALL=true; shift ;;
     --scope)
       if [[ -z "${2:-}" ]]; then
         echo "Error: --scope requires a value (project or user)"
@@ -55,15 +51,9 @@ else
   CODEX_DIR=".codex"
 fi
 
-if [ "$ALL" = true ]; then
-  SKILLS="verify create_tests cloud-tests"
-  EDITION="full"
-else
-  SKILLS="verify create_tests"
-  EDITION="standard"
-fi
+SKILLS="verify create_tests cloud"
 
-echo "Installing Shiplight Codex plugin ($EDITION, scope=$SCOPE)..."
+echo "Installing Shiplight Codex plugin (scope=$SCOPE)..."
 if [ "$SCOPE" = "user" ]; then
   echo "  Destination: $HOME/.agents/skills/ and $HOME/.codex/"
 else
@@ -100,13 +90,9 @@ for skill in $SKILLS; do
     echo "  Installing skill: $skill"
   fi
 
-  mkdir -p "$dest/agents"
+  mkdir -p "$dest"
   cp "$src/SKILL.md" "$dest/SKILL.md"
   echo "    $src/SKILL.md -> $dest/SKILL.md"
-  if [ -f "$src/agents/openai.yaml" ]; then
-    cp "$src/agents/openai.yaml" "$dest/agents/openai.yaml"
-    echo "    $src/agents/openai.yaml -> $dest/agents/openai.yaml"
-  fi
 done
 
 # --- Install MCP config ---
@@ -114,7 +100,6 @@ mkdir -p "$CODEX_DIR"
 CONFIG_FILE="$CODEX_DIR/config.toml"
 
 if [ -f "$CONFIG_FILE" ]; then
-  # Check if browser server is already configured
   if grep -q '\[mcp_servers\.shiplight\]' "$CONFIG_FILE" 2>/dev/null; then
     echo "  Shiplight MCP server already configured in $CONFIG_FILE"
   else
@@ -129,22 +114,6 @@ args = ["--yes", "@shiplightai/mcp@latest"]
 PWDEBUG = "console"
 TOML
   fi
-
-  # Add cloud MCP server if --all
-  if [ "$ALL" = true ]; then
-    if grep -q '\[mcp_servers\.shiplight-cloud\]' "$CONFIG_FILE" 2>/dev/null; then
-      echo "  Shiplight Cloud MCP server already configured in $CONFIG_FILE"
-    else
-      echo "  Appending Shiplight Cloud MCP server to $CONFIG_FILE"
-      cat >> "$CONFIG_FILE" <<'TOML'
-
-[mcp_servers.shiplight-cloud]
-command = "npx"
-args = ["--yes", "@shiplightai/mcp@latest", "--cloud"]
-
-TOML
-    fi
-  fi
 else
   echo "  Creating $CONFIG_FILE"
   cp "$SCRIPT_DIR/codex/config.toml" "$CONFIG_FILE"
@@ -158,6 +127,4 @@ echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
 echo "  3. Use \$create_tests to scaffold a local Shiplight test project"
-if [ "$ALL" = true ]; then
-  echo "  4. Use \$cloud-tests to manage cloud test cases"
-fi
+echo "  4. Use \$cloud to sync test cases with Shiplight cloud"

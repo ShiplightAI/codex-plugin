@@ -1,6 +1,6 @@
 # Shiplight Codex Plugin
 
-AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — browser testing via MCP and cloud test management.
+AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — browser testing, YAML test authoring, and cloud test management.
 
 ## Quick Install
 ```bash
@@ -8,18 +8,13 @@ git clone https://github.com/ShiplightAI/codex-plugin
 ```
 
 ```bash
-bash ./codex-plugin/install.sh                     # Install verify skill (project-level)
-bash ./codex-plugin/install.sh --all               # Install all skills including Shiplight cloud
+bash ./codex-plugin/install.sh                     # Install to project-level
 bash ./codex-plugin/install.sh --scope user        # Install to user-level
 ```
 
-Options can be combined, e.g. `bash install.sh --all --scope user`.
-
 ## Manual Install
 
-### Default (MCP + verify + create_tests)
-
-1. Copy `agents/skills/verify/` and `agents/skills/create_tests/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
+1. Copy `agents/skills/verify/`, `agents/skills/create_tests/`, and `agents/skills/cloud/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
 
 2. Add the Shiplight MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
 
@@ -32,23 +27,21 @@ args = ["--yes", "@shiplightai/mcp@latest"]
 PWDEBUG = "console"
 ```
 
-### All skills (adds Shiplight cloud)
-
-Follow the steps above, then also copy `agents/skills/cloud-tests/` to your `.agents/skills/` directory.
+Cloud tools (`save_test_case`, `get_test_case`, etc.) are automatically available when `SHIPLIGHT_API_TOKEN` is set in the project's `.env` file.
 
 ## Skills
 
-### `$verify` — Browser Verification (free)
+### `$verify` — Browser Verification
 
 Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior.
 
-### `$create_tests` — YAML Test Authoring (free)
+### `$create_tests` — YAML Test Authoring
 
 Scaffold a local Shiplight test project, configure credentials, and write YAML tests by walking through the app in a browser.
 
-### `$cloud-tests` — Cloud Test Management
+### `$cloud` — Cloud Sync & Management
 
-Create, run, and manage test cases via the Shiplight REST API. Supports test generation from natural language goals, test execution with result polling, and artifact downloads.
+Sync local test cases, templates, and functions with Shiplight cloud. Manage test runs, environments, folders, and accounts via the REST API.
 
 ## Links
 
