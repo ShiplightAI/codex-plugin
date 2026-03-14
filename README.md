@@ -1,6 +1,6 @@
 # Shiplight Codex Plugin
 
-AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — browser testing, YAML test authoring, and cloud test management.
+AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — ship with confidence by letting the agent verify, test, and iterate autonomously.
 
 ## Quick Install
 ```bash
@@ -12,36 +12,22 @@ bash ./codex-plugin/install.sh                     # Install to project-level
 bash ./codex-plugin/install.sh --scope user        # Install to user-level
 ```
 
-## Manual Install
-
-1. Copy `agents/skills/verify/`, `agents/skills/create_tests/`, and `agents/skills/cloud/` to your project's `.agents/skills/` directory (or `~/.agents/skills/` for user-level).
-
-2. Add the Shiplight MCP server to `.codex/config.toml` (or `~/.codex/config.toml`):
-
-```toml
-[mcp_servers.shiplight]
-command = "npx"
-args = ["--yes", "@shiplightai/mcp@latest"]
-
-[mcp_servers.shiplight.env]
-PWDEBUG = "console"
-```
-
-Cloud tools (`save_test_case`, `get_test_case`, etc.) are automatically available when `SHIPLIGHT_API_TOKEN` is set in the project's `.env` file.
 
 ## Skills
 
+Three commands that cover the full test lifecycle:
+
 ### `$verify` — Browser Verification
 
-Visually verify UI changes in a real browser using Shiplight MCP tools. Use after making frontend changes to confirm layout, styling, and interactive behavior.
+Visually confirm UI changes in the browser after a code change.
 
-### `$create_tests` — YAML Test Authoring
+### `$create_tests` — Regression Test Authoring
 
-Scaffold a local Shiplight test project, configure credentials, and write YAML tests by walking through the app in a browser.
+Generate e2e regression tests from code changes or app exploration.
 
-### `$cloud` — Cloud Sync & Management
+### `$cloud` — Cloud Sync
 
-Sync local test cases, templates, and functions with Shiplight cloud. Manage test runs, environments, folders, and accounts via the REST API.
+Sync and share regression tests on the cloud platform for scheduled runs, team collaboration, and CI integration.
 
 ## Links
 
