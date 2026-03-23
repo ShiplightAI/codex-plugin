@@ -51,7 +51,7 @@ else
   CODEX_DIR=".codex"
 fi
 
-SKILLS="verify create_tests cloud"
+SKILLS="verify create_e2e_tests cloud review design-review security-review privacy-review compliance-review resilience-review performance-review seo-review geo-review"
 
 echo "Installing Shiplight Codex plugin (scope=$SCOPE)..."
 if [ "$SCOPE" = "user" ]; then
@@ -126,5 +126,5 @@ echo ""
 echo "Next steps:"
 echo "  1. Open Codex in your project"
 echo "  2. Use \$verify to test UI changes in a browser"
-echo "  3. Use \$create_tests to scaffold a local Shiplight test project"
+echo "  3. Use \$create_e2e_tests to scaffold a local Shiplight test project"
 echo "  4. Use \$cloud to sync test cases with Shiplight cloud"
