@@ -51,7 +51,7 @@ else
   CODEX_DIR=".codex"
 fi
 
-SKILLS="verify create_e2e_tests cloud review design-review security-review privacy-review compliance-review resilience-review performance-review seo-review geo-review"
+SKILLS="verify create_e2e_tests cloud triage review design-review security-review privacy-review compliance-review resilience-review performance-review seo-review geo-review"
 
 echo "Installing Shiplight Codex plugin (scope=$SCOPE)..."
 if [ "$SCOPE" = "user" ]; then
