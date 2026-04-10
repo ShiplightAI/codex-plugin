@@ -23,6 +23,10 @@ Visually confirm UI changes in the browser after a code change.
 
 Spec-driven E2E test creation: plan what to test through structured discovery phases, then scaffold a local Shiplight test project and write YAML tests by walking through the app in a browser.
 
+### `$triage` — Test Failure Triage
+
+Reproduce failing E2E tests, diagnose root causes, fix YAML tests, and report application bugs — with batch healing and concurrent browser investigation.
+
 ### `$cloud` — Cloud Sync
 
 Sync and share regression tests on the cloud platform for scheduled runs, team collaboration, and CI integration.
