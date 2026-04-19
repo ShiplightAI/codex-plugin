@@ -1,54 +1,29 @@
-# Shiplight Codex Plugin
+# Shiplight Codex Plugin (deprecated)
 
-AI-powered test automation for [OpenAI Codex](https://openai.com/codex) — ship with confidence by letting the agent verify, test, and iterate autonomously.
+> **This repo is deprecated.** Skills and MCP installation have moved to [ShiplightAI/agent-skills](https://github.com/ShiplightAI/agent-skills), which supports [OpenAI Codex](https://openai.com/codex) and 40+ other coding agents from a single source.
 
-## Quick Install
+## Migrate
+
+Install skills and the MCP server in one step:
+
 ```bash
-git clone https://github.com/ShiplightAI/codex-plugin
+npx -y skills add ShiplightAI/agent-skills -a codex -y && \
+npx -y add-mcp "npx -y @shiplightai/mcp@latest" -n shiplight --env PWDEBUG=console -a codex -y
 ```
 
-```bash
-bash ./codex-plugin/install.sh                     # Install to project-level
-bash ./codex-plugin/install.sh --scope user        # Install to user-level
-```
+Full install guide: [docs.shiplight.ai quick start](https://docs.shiplight.ai/getting-started/quick-start).
 
+## Why this moved
 
-## Skills
+The Claude Code / Cursor / Codex plugin repos have been consolidated into a single source of truth. The [`skills`](https://www.npmjs.com/package/skills) CLI installs skills across 40+ agents; [`add-mcp`](https://www.npmjs.com/package/add-mcp) installs the MCP server. One update reaches every supported agent.
 
-### `$verify` — Browser Verification
+## Existing installs
 
-Visually confirm UI changes in the browser after a code change.
-
-### `$create_e2e_tests` — E2E Test Authoring
-
-Spec-driven E2E test creation: plan what to test through structured discovery phases, then scaffold a local Shiplight test project and write YAML tests by walking through the app in a browser.
-
-### `$triage` — Test Failure Triage
-
-Reproduce failing E2E tests, diagnose root causes, fix YAML tests, and report application bugs — with batch healing and concurrent browser investigation.
-
-### `$cloud` — Cloud Sync
-
-Sync and share regression tests on the cloud platform for scheduled runs, team collaboration, and CI integration.
-
-### Review Toolkit
-
-Nine specialized review skills for comprehensive code and product review:
-
-| Skill | Description |
-|-------|-------------|
-| `$review` | General code review with actionable feedback |
-| `$design-review` | UX/UI design review for usability, consistency, and accessibility |
-| `$security-review` | Security-focused review for vulnerabilities and attack surfaces |
-| `$privacy-review` | Privacy review for data handling, consent, and regulatory compliance |
-| `$compliance-review` | Regulatory and standards compliance review |
-| `$resilience-review` | Resilience review for fault tolerance, recovery, and graceful degradation |
-| `$performance-review` | Performance review for bottlenecks, efficiency, and scalability |
-| `$seo-review` | SEO review for discoverability, metadata, and search ranking factors |
-| `$geo-review` | Internationalization and localization review for multi-region readiness |
+The old `bash install.sh` flow still works, but it won't receive new skills or fixes. Re-install with the commands above to stay current.
 
 ## Links
 
 - [Shiplight](https://www.shiplight.ai)
+- [New skills repo](https://github.com/ShiplightAI/agent-skills)
 - [Codex Skills Docs](https://developers.openai.com/codex/skills/)
 - [Codex MCP Docs](https://developers.openai.com/codex/mcp)
